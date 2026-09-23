@@ -82,3 +82,24 @@ final class CollabProtocolTests: XCTestCase {
         XCTAssertEqual(decoded, event)
     }
 }
+
+final class MicProcessingTests: XCTestCase {
+    func testSystemUsesPlatformVoiceProcessing() {
+        let options = CaptureSettings.preset(.system).makeCaptureOptions()
+        XCTAssertEqual(CaptureSettings.preset(.system).mode, .system)
+        XCTAssertTrue(options.echoCancellation)
+        XCTAssertEqual(options.echoCancellationMode, .platform)
+        XCTAssertFalse(options.noiseSuppression)
+        XCTAssertFalse(CaptureSettings.preset(.system).krispEnabled)
+    }
+
+    func testOpenMicTurnsIsolationOff() {
+        let options = CaptureSettings.preset(.open).makeCaptureOptions()
+        XCTAssertFalse(options.echoCancellation)
+        XCTAssertFalse(options.autoGainControl)
+        XCTAssertFalse(options.noiseSuppression)
+        XCTAssertFalse(options.highpassFilter)
+        XCTAssertFalse(options.typingNoiseDetection)
+        XCTAssertFalse(CaptureSettings.preset(.open).krispEnabled)
+    }
+}

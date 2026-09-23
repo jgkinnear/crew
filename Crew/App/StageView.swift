@@ -21,6 +21,16 @@ struct StageView: View {
             .padding(.top, 4)
             .padding(.bottom, 78)
 
+            VStack {
+                if !session.activeSpeakers.isEmpty {
+                    SpeakingBanner(speakers: session.activeSpeakers)
+                        .padding(.top, 10)
+                }
+                Spacer()
+            }
+            .padding(.horizontal, 18)
+            .allowsHitTesting(false)
+
             HuddleDock()
                 .padding(.bottom, 18)
         }
@@ -86,12 +96,33 @@ private struct HuddleDock: View {
                 Task { await session.toggleMic() }
             }
 
-            DockButton(
-                icon: session.isolation.active.symbolName,
-                title: session.isolation.active.displayName
-            ) {
-                session.isolation.openSystemPicker()
+            Menu {
+                ForEach(MicProcessingMode.allCases) { mode in
+                    Button {
+                        Task { await session.setMicMode(mode) }
+                    } label: {
+                        if session.capture.mode == mode {
+                            Label(mode.title, systemImage: "checkmark")
+                        } else {
+                            Text(mode.title)
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: session.capture.mode.symbolName)
+                        .font(.system(size: 14, weight: .semibold))
+                    Text(session.capture.mode.title)
+                        .font(.system(size: 12.5, weight: .semibold))
+                }
+                .foregroundStyle(CrewTheme.text)
+                .frame(height: 36)
+                .padding(.horizontal, 12)
+                .background(Color.white.opacity(0.06), in: Capsule())
             }
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
+            .help(session.capture.mode == .system ? "System voice · \(session.systemMicMode)" : "All sound")
 
             DockButton(
                 icon: session.isSharing ? "stop.fill" : "rectangle.dashed.badge.record",

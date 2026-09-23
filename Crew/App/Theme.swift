@@ -149,6 +149,74 @@ struct LivePill: View {
     }
 }
 
+struct SpeakingBars: View {
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 0.08, paused: false)) { timeline in
+            let t = timeline.date.timeIntervalSinceReferenceDate
+            HStack(alignment: .center, spacing: 2) {
+                bar(t, phase: 0)
+                bar(t, phase: 0.45)
+                bar(t, phase: 0.9)
+            }
+        }
+        .frame(width: 12, height: 14)
+        .accessibilityHidden(true)
+    }
+
+    private func bar(_ t: TimeInterval, phase: Double) -> some View {
+        let height = 4 + abs(sin(t * 9 + phase * .pi)) * 10
+        return Capsule()
+            .fill(CrewTheme.accent2)
+            .frame(width: 2.5, height: height)
+    }
+}
+
+struct SpeakingBanner: View {
+    let speakers: [(identity: String, name: String, isLocal: Bool)]
+
+    var body: some View {
+        HStack(spacing: 10) {
+            SpeakingBars()
+            ForEach(speakers, id: \.identity) { speaker in
+                HStack(spacing: 7) {
+                    CrewAvatar(name: speaker.name, identity: speaker.identity, size: 22, speaking: true)
+                    Text(speaker.isLocal ? "You’re talking" : "\(speaker.name) is talking")
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                        .foregroundStyle(CrewTheme.text)
+                }
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .crewGlass(corner: 18)
+    }
+}
+
+struct SpeakingChip: View {
+    let speakers: [(identity: String, name: String, isLocal: Bool)]
+
+    var body: some View {
+        HStack(spacing: 6) {
+            SpeakingBars()
+            Text(label)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(CrewTheme.accent2)
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .background(CrewTheme.accent2.opacity(0.12), in: Capsule())
+    }
+
+    private var label: String {
+        let names = speakers.map { $0.isLocal ? "You" : $0.name }
+        if names.count == 1 {
+            return "\(names[0]) talking"
+        }
+        return names.joined(separator: ", ")
+    }
+}
+
 struct DockButton: View {
     var icon: String
     var title: String?

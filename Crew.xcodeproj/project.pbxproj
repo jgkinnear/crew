@@ -25,6 +25,7 @@
 		DD39F121002A4205AD309C36 /* CollabStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7389061F48C428CA73E110E /* CollabStore.swift */; };
 		9286EB99C26C49CABAEA5B32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 050038D257D8498A8DB744EB /* Assets.xcassets */; };
 		C0A1B2C3D4E5F60718293A01 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1B2C3D4E5F60718293A00 /* Theme.swift */; };
+		AB19B4E8FE7942F992F5236E /* CollabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB8495DF8234A4BBCB10302 /* CollabTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -408,7 +409,9 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.crew.app.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -423,7 +426,9 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.crew.app.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

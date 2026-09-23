@@ -30,10 +30,13 @@ struct CrewApp: App {
 
                 Divider()
 
-                Button("Voice Isolation…") {
-                    session.isolation.openSystemPicker()
+                Button(session.capture.mode == .system ? "System Voice ✓" : "System Voice") {
+                    Task { await session.setMicMode(.system) }
                 }
                 .keyboardShortcut("i", modifiers: [.command, .shift])
+                Button(session.capture.mode == .open ? "All Sound ✓" : "All Sound") {
+                    Task { await session.setMicMode(.open) }
+                }
 
                 Divider()
 

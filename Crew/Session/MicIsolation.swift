@@ -1,87 +1,79 @@
 import AVFoundation
-import Combine
-import Foundation
+import LiveKit
 
-/// Apple's system microphone modes. These only apply when the capture path
-/// uses Voice Processing I/O (LiveKit's default with echo cancellation on).
-/// The app cannot set the mode itself — macOS keeps the user in control —
-/// but we can show the current mode and open Control Center to change it.
-@MainActor
-final class MicIsolation: ObservableObject {
-    @Published private(set) var preferred: AVCaptureDevice.MicrophoneMode
-    @Published private(set) var active: AVCaptureDevice.MicrophoneMode
+/// Two mic paths. System follows the macOS mic mode already chosen in Control Center.
+/// Open turns voice processing off so isolation does not apply.
+enum MicProcessingMode: String, CaseIterable, Identifiable {
+    case system
+    case open
 
-    private var pollTimer: Timer?
+    var id: String { rawValue }
 
-    init() {
-        preferred = AVCaptureDevice.preferredMicrophoneMode
-        active = AVCaptureDevice.activeMicrophoneMode
-        pollTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                self?.refresh()
-            }
-        }
-    }
-
-    deinit {
-        pollTimer?.invalidate()
-    }
-
-    func refresh() {
-        preferred = AVCaptureDevice.preferredMicrophoneMode
-        active = AVCaptureDevice.activeMicrophoneMode
-    }
-
-    /// Opens the system Mic Mode picker. Call this when the user taps a mode.
-    func openSystemPicker() {
-        AVCaptureDevice.showSystemUserInterface(.microphoneModes)
-        // Control Center is not a blocking UI; poll briefly after it closes.
-        Task {
-            for _ in 0 ..< 20 {
-                try? await Task.sleep(for: .milliseconds(400))
-                refresh()
-            }
-        }
-    }
-
-    var preferredTitle: String { preferred.displayName }
-    var activeTitle: String { active.displayName }
-    var isVoiceIsolationActive: Bool { active == .voiceIsolation }
-}
-
-extension AVCaptureDevice.MicrophoneMode {
-    var displayName: String {
+    var title: String {
         switch self {
-        case .voiceIsolation: return "Voice Isolation"
-        case .wideSpectrum: return "Wide Spectrum"
-        case .standard: return "Standard"
-        @unknown default: return "Unknown"
+        case .system: return "System voice"
+        case .open: return "All sound"
         }
     }
 
     var subtitle: String {
         switch self {
-        case .voiceIsolation:
-            return "Keeps your voice and drops keyboards, fans, whistles, and other non-speech."
-        case .wideSpectrum:
-            return "Captures the room as-is. Echo cancellation stays on, isolation does not."
-        case .standard:
-            return "Apple’s balanced processing. Softer than Voice Isolation."
-        @unknown default:
-            return ""
+        case .system:
+            return "Uses the mic mode macOS already has. Crew does not open Control Center."
+        case .open:
+            return "Isolation off. Keyboards, room noise, and everything else come through."
         }
     }
 
     var symbolName: String {
         switch self {
-        case .voiceIsolation: return "waveform.and.mic"
-        case .wideSpectrum: return "dot.radiowaves.left.and.right"
-        case .standard: return "mic"
-        @unknown default: return "mic"
+        case .system: return "waveform.and.mic"
+        case .open: return "mic"
         }
     }
+}
 
-    static var huddleModes: [AVCaptureDevice.MicrophoneMode] {
-        [.voiceIsolation, .standard, .wideSpectrum]
+struct CaptureSettings: Equatable {
+    var mode: MicProcessingMode
+
+    static func preset(_ mode: MicProcessingMode) -> CaptureSettings {
+        CaptureSettings(mode: mode)
+    }
+
+    /// Krisp is not part of either mode. The filter stays installed and disabled.
+    var krispEnabled: Bool { false }
+
+    func makeCaptureOptions() -> AudioCaptureOptions {
+        switch mode {
+        case .system:
+            return AudioCaptureOptions(
+                echoCancellation: true,
+                autoGainControl: true,
+                noiseSuppression: false,
+                highpassFilter: false,
+                typingNoiseDetection: false,
+                echoCancellationMode: .platform,
+                autoGainControlMode: .platform
+            )
+        case .open:
+            return .noProcessing
+        }
+    }
+}
+
+enum SystemMic {
+    static var activeTitle: String {
+        AVCaptureDevice.activeMicrophoneMode.crewTitle
+    }
+}
+
+extension AVCaptureDevice.MicrophoneMode {
+    var crewTitle: String {
+        switch self {
+        case .standard: return "Standard"
+        case .voiceIsolation: return "Voice Isolation"
+        case .wideSpectrum: return "Wide Spectrum"
+        @unknown default: return "System"
+        }
     }
 }

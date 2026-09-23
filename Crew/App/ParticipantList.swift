@@ -15,7 +15,8 @@ struct ParticipantList: View {
                         ParticipantRow(
                             participant: participant,
                             isLocal: participant.identity == session.room.localParticipant.identity,
-                            isSharing: session.activeShare?.participant.identity == participant.identity
+                            isSharing: session.activeShare?.participant.identity == participant.identity,
+                            speaking: session.isSpeaking(participant.identity?.stringValue ?? "")
                         )
                     }
                 }
@@ -37,6 +38,7 @@ private struct ParticipantRow: View {
     let participant: Participant
     let isLocal: Bool
     let isSharing: Bool
+    let speaking: Bool
 
     var body: some View {
         HStack(spacing: 10) {
@@ -44,7 +46,7 @@ private struct ParticipantRow: View {
                 name: displayName,
                 identity: identity,
                 size: 34,
-                speaking: participant.isSpeaking,
+                speaking: speaking,
                 sharing: isSharing
             )
             VStack(alignment: .leading, spacing: 2) {
@@ -65,8 +67,9 @@ private struct ParticipantRow: View {
                 HStack(spacing: 5) {
                     Image(systemName: micMuted ? "mic.slash" : "mic.fill")
                         .foregroundStyle(micMuted ? CrewTheme.faint : CrewTheme.success)
-                    if participant.isSpeaking {
-                        Image(systemName: "waveform")
+                    if speaking {
+                        SpeakingBars()
+                        Text(isLocal ? "you’re talking" : "talking")
                             .foregroundStyle(CrewTheme.accent2)
                     }
                     if isSharing {
@@ -82,8 +85,13 @@ private struct ParticipantRow: View {
         .padding(.vertical, 8)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(participant.isSpeaking ? CrewTheme.accent2.opacity(0.08) : Color.clear)
+                .fill(speaking ? CrewTheme.accent2.opacity(0.08) : Color.clear)
         )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .strokeBorder(speaking ? CrewTheme.accent2.opacity(0.35) : Color.clear)
+        )
+        .animation(.easeInOut(duration: 0.18), value: speaking)
     }
 
     private var identity: String {

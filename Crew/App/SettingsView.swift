@@ -12,7 +12,7 @@ struct SettingsView: View {
                     LabeledContent("LiveKit", value: session.config.url)
                 }
                 Section("About") {
-                    Text("Native Mac Crew uses Apple Mic Modes through Voice Processing I/O, plus optional Krisp on LiveKit Cloud.")
+                    Text("System voice follows the mic mode already set in macOS. All sound turns that processing off.")
                         .foregroundStyle(.secondary)
                 }
             }

@@ -11,20 +11,10 @@ enum ToolMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-struct CaptureSettings: Equatable {
-    var echoCancellation = true
-    var autoGainControl = true
-    var noiseSuppression = false
-    var highpassFilter = true
-    var typingNoiseDetection = true
-    var krispEnabled = true
-}
-
 @MainActor
 final class CrewSession: ObservableObject {
     let room = Room()
     let collab = CollabStore()
-    let isolation = MicIsolation()
 
     @Published var config = CrewConfig.load()
     @Published var displayName = UserDefaults.standard.string(forKey: "crew.displayName") ?? ""
@@ -34,15 +24,22 @@ final class CrewSession: ObservableObject {
     @Published var isSharing = false
     @Published var shareBlockedReason: String?
     @Published var toolMode: ToolMode = .none
-    @Published var capture = CaptureSettings()
+    @Published var capture = CaptureSettings.preset(.system)
+    @Published var systemMicMode = SystemMic.activeTitle
     @Published var soundsEnabled = true
     @Published var shareSources: [ShareSourceItem] = []
     @Published var isSharePickerPresented = false
     @Published var isLoadingSources = false
+    @Published var speakingIds: Set<String> = []
 
     private var screenPublication: LocalTrackPublication?
     private var cancellables = Set<AnyCancellable>()
     private var rpcRegistered = false
+    private var micModeTimer: Timer?
+
+    var isLocalSharing: Bool {
+        activeShare?.participant.identity == room.localParticipant.identity
+    }
 
     var isConnected: Bool {
         room.connectionState == .connected
@@ -68,15 +65,32 @@ final class CrewSession: ObservableObject {
         return nil
     }
 
-    var isLocalSharing: Bool {
-        activeShare?.participant.identity == room.localParticipant.identity
+    var activeSpeakers: [(identity: String, name: String, isLocal: Bool)] {
+        participants.compactMap { participant in
+            let id = participant.identity?.stringValue ?? ""
+            guard speakingIds.contains(id) else { return nil }
+            let name = participant.name?.isEmpty == false
+                ? participant.name!
+                : id
+            return (id, name, participant.identity == room.localParticipant.identity)
+        }
+    }
+
+    func isSpeaking(_ identity: String) -> Bool {
+        speakingIds.contains(identity)
     }
 
     init() {
         AudioManager.shared.capturePostProcessingDelegate = krispFilter
         room.add(delegate: krispFilter)
         room.add(delegate: self)
-        krispFilter.isEnabled = capture.krispEnabled
+        krispFilter.isEnabled = false
+        refreshSystemMicMode()
+        micModeTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.refreshSystemMicMode()
+            }
+        }
 
         room.objectWillChange
             .receive(on: RunLoop.main)
@@ -137,7 +151,13 @@ final class CrewSession: ObservableObject {
         collab.reset()
         screenPublication = nil
         isSharing = false
+        speakingIds = []
         try? await room.disconnect()
+    }
+
+    func setMicMode(_ mode: MicProcessingMode) async {
+        capture = .preset(mode)
+        await applyCaptureSettings()
     }
 
     func toggleMic() async {
@@ -164,7 +184,6 @@ final class CrewSession: ObservableObject {
         } catch {
             connectionError = error.localizedDescription
         }
-        isolation.refresh()
     }
 
     func presentSharePicker() async {
@@ -261,14 +280,15 @@ final class CrewSession: ObservableObject {
         }
     }
 
+    private func refreshSystemMicMode() {
+        let title = SystemMic.activeTitle
+        if title != systemMicMode {
+            systemMicMode = title
+        }
+    }
+
     private func audioCaptureOptions() -> AudioCaptureOptions {
-        AudioCaptureOptions(
-            echoCancellation: capture.echoCancellation,
-            autoGainControl: capture.autoGainControl,
-            noiseSuppression: capture.noiseSuppression,
-            highpassFilter: capture.highpassFilter,
-            typingNoiseDetection: capture.typingNoiseDetection
-        )
+        capture.makeCaptureOptions()
     }
 
     private func registerCollabRPC() async throws {
@@ -331,8 +351,19 @@ extension CrewSession: RoomDelegate {
     }
 
     nonisolated func room(_ room: Room, participantDidDisconnect participant: RemoteParticipant) {
+        let identity = participant.identity?.stringValue
         Task { @MainActor in
+            if let identity {
+                self.speakingIds.remove(identity)
+            }
             if self.soundsEnabled { HuddleSounds.leave() }
+        }
+    }
+
+    nonisolated func room(_ room: Room, didUpdateSpeakingParticipants participants: [Participant]) {
+        let ids = Set(participants.compactMap { $0.identity?.stringValue })
+        Task { @MainActor in
+            self.speakingIds = ids
         }
     }
 
@@ -341,6 +372,7 @@ extension CrewSession: RoomDelegate {
             self.isSharing = false
             self.screenPublication = nil
             self.toolMode = .none
+            self.speakingIds = []
             if let error {
                 self.connectionError = error.localizedDescription
             }

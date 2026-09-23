@@ -1,0 +1,76 @@
+name: Build
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: LiveKit env from Actions secrets
+        env:
+          LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
+          LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
+          LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
+          LIVEKIT_ROOM: ${{ secrets.LIVEKIT_ROOM }}
+        run: |
+          missing=
+          for name in LIVEKIT_URL LIVEKIT_API_KEY LIVEKIT_API_SECRET LIVEKIT_ROOM; do
+            eval "value=\${$name}"
+            if [ -z "$value" ]; then
+              missing="$missing $name"
+            fi
+          done
+          if [ -n "$missing" ]; then
+            echo "Missing GitHub Actions secrets:$missing"
+            echo "Add them under Settings → Secrets and variables → Actions → Secrets."
+            exit 1
+          fi
+          umask 077
+          {
+            printf 'LIVEKIT_URL=%s\n' "$LIVEKIT_URL"
+            printf 'LIVEKIT_API_KEY=%s\n' "$LIVEKIT_API_KEY"
+            printf 'LIVEKIT_API_SECRET=%s\n' "$LIVEKIT_API_SECRET"
+            printf 'LIVEKIT_ROOM=%s\n' "$LIVEKIT_ROOM"
+          } > .env
+
+      - name: Build
+        run: |
+          xcodebuild \
+            -project Crew.xcodeproj \
+            -scheme Crew \
+            -configuration Release \
+            -derivedDataPath ./DerivedData \
+            -destination 'platform=macOS' \
+            -clonedSourcePackagesDirPath ./SourcePackages \
+            CODE_SIGN_IDENTITY="-" \
+            build
+
+      - name: Test
+        run: |
+          xcodebuild \
+            -project Crew.xcodeproj \
+            -scheme Crew \
+            -derivedDataPath ./DerivedData \
+            -destination 'platform=macOS' \
+            -clonedSourcePackagesDirPath ./SourcePackages \
+            CODE_SIGN_IDENTITY="-" \
+            test
+
+      - name: Package
+        run: |
+          APP="./DerivedData/Build/Products/Release/Crew.app"
+          mkdir -p release
+          codesign --force --deep --sign - --timestamp=none "$APP"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" release/Crew-mac-arm64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Crew-mac-arm64
+          path: release/Crew-mac-arm64.zip
+          if-no-files-found: error
+          retention-days: 14

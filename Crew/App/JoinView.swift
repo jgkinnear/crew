@@ -25,7 +25,7 @@ struct JoinView: View {
                         Text("Step into the huddle")
                             .font(.system(size: 28, weight: .semibold, design: .rounded))
                             .foregroundStyle(CrewTheme.text)
-                        Text("Persistent voice, screen share, and annotations — with Apple Voice Isolation on the mic.")
+                        Text("Persistent voice, screen share, and annotations. The mic follows the macOS voice mode, or you can let all sound through.")
                             .font(.system(size: 14.5))
                             .foregroundStyle(CrewTheme.dim)
                             .fixedSize(horizontal: false, vertical: true)

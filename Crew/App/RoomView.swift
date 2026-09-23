@@ -1,4 +1,3 @@
-import AVFoundation
 import SwiftUI
 
 struct RoomView: View {
@@ -63,6 +62,9 @@ struct RoomView: View {
             Spacer()
 
             LivePill()
+            if !session.activeSpeakers.isEmpty {
+                SpeakingChip(speakers: session.activeSpeakers)
+            }
             Text(peopleLabel)
                 .font(.caption.weight(.medium))
                 .foregroundStyle(CrewTheme.dim)
@@ -77,7 +79,7 @@ struct RoomView: View {
                     .background(Color.white.opacity(inspectorOpen ? 0.1 : 0.04), in: Circle())
             }
             .buttonStyle(.plain)
-            .help("Isolation")
+            .help("Sound")
         }
         .foregroundStyle(CrewTheme.text)
         .padding(.leading, 86)
