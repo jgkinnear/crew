@@ -1,0 +1,36 @@
+# Env (secrets — baked into the app at build, never commit)
+.env
+.env.*
+!.env.example
+
+# Xcode
+/DerivedData/
+/SourcePackages/
+/.build/
+/build/
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# Built products
+*.app
+*.dSYM
+*.dmg
+*.zip
+release/
+
+# Signing material
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
+
+# Editor / OS
+.DS_Store
+.idea
+*.swp

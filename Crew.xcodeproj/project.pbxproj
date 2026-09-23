@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		37EBEF2642004B6CABF8D699 /* CrewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1280CAB7C254DA4B252B4F7 /* CrewApp.swift */; };
+		DA115CA28D6E4A7A8F9F73A5 /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A341E4EB804BAD8854D110 /* JoinView.swift */; };
+		CF14F64C13C04DDC8E00DFB4 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BF9BFEA0D347868FD2F765 /* RoomView.swift */; };
+		43B8F3ABA24E411DABC85808 /* ParticipantList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36F0AF204244632ADF4D1C7 /* ParticipantList.swift */; };
+		E53CEE3BA09248659F79D631 /* StageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01A780E1AB475084E78570 /* StageView.swift */; };
+		87C600C606814C8AADBF4772 /* IsolationInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D383CDD6F4CFD8C72FF78 /* IsolationInspector.swift */; };
+		7AA08B419B194D5A97B84B62 /* SharePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7047C8B840C643D4890FDB79 /* SharePickerSheet.swift */; };
+		99B6AB91FED94322AA7725F0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C134467987E34B46856AF1BE /* SettingsView.swift */; };
+		99575C8D5D6741CA951522AC /* CrewSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EADB733A62C470FB81EE6B9 /* CrewSession.swift */; };
+		B8580A011DD542D2A34C0FC7 /* CrewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A668D96697B496185F1C9F7 /* CrewConfig.swift */; };
+		2F6BF2ED3206433EA57F7A7E /* LiveKitToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE5C4A96176416DBD05BE7D /* LiveKitToken.swift */; };
+		B38C912B3D3849B6938F6C73 /* MicIsolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB29D9343D149D3B9DA1E05 /* MicIsolation.swift */; };
+		777B9CA5C50549A1BE3337DA /* HuddleSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B3E7E76724B5BB35766A5 /* HuddleSounds.swift */; };
+		CCE409BA87634DD2A6D0715F /* CollabProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2755D7245B4E7D9049E895 /* CollabProtocol.swift */; };
+		9CB9EF3B4C074D0396C0C941 /* CollabCoords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B44FCF9563A423E8C57EADA /* CollabCoords.swift */; };
+		DD39F121002A4205AD309C36 /* CollabStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7389061F48C428CA73E110E /* CollabStore.swift */; };
+		9286EB99C26C49CABAEA5B32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 050038D257D8498A8DB744EB /* Assets.xcassets */; };
+		C0A1B2C3D4E5F60718293A01 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1B2C3D4E5F60718293A00 /* Theme.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8A7C6B601DFD46438161F6D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80DA8F8BE3E243AB872CA061 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ADE33EA79C8C4B62A8350F1D;
+			remoteInfo = Crew;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C0A1B2C3D4E5F60718293A00 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		C1280CAB7C254DA4B252B4F7 /* CrewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewApp.swift; sourceTree = "<group>"; };
+		46A341E4EB804BAD8854D110 /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
+		07BF9BFEA0D347868FD2F765 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
+		B36F0AF204244632ADF4D1C7 /* ParticipantList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantList.swift; sourceTree = "<group>"; };
+		1E01A780E1AB475084E78570 /* StageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageView.swift; sourceTree = "<group>"; };
+		E37D383CDD6F4CFD8C72FF78 /* IsolationInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsolationInspector.swift; sourceTree = "<group>"; };
+		7047C8B840C643D4890FDB79 /* SharePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePickerSheet.swift; sourceTree = "<group>"; };
+		C134467987E34B46856AF1BE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5EADB733A62C470FB81EE6B9 /* CrewSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewSession.swift; sourceTree = "<group>"; };
+		3A668D96697B496185F1C9F7 /* CrewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewConfig.swift; sourceTree = "<group>"; };
+		5BE5C4A96176416DBD05BE7D /* LiveKitToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveKitToken.swift; sourceTree = "<group>"; };
+		6FB29D9343D149D3B9DA1E05 /* MicIsolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicIsolation.swift; sourceTree = "<group>"; };
+		673B3E7E76724B5BB35766A5 /* HuddleSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuddleSounds.swift; sourceTree = "<group>"; };
+		8D2755D7245B4E7D9049E895 /* CollabProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabProtocol.swift; sourceTree = "<group>"; };
+		2B44FCF9563A423E8C57EADA /* CollabCoords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabCoords.swift; sourceTree = "<group>"; };
+		B7389061F48C428CA73E110E /* CollabStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabStore.swift; sourceTree = "<group>"; };
+		8CB972C4FF6342D5863CE54E /* Crew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crew.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6266644055F94E82A91C6EFF /* CrewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CrewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5A02D6A9EC24522BF4DA014 /* Crew.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crew.entitlements; sourceTree = "<group>"; };
+		1DF1CD656E414FDCB5B87D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		050038D257D8498A8DB744EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACB8495DF8234A4BBCB10302 /* CollabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B835D664A4E14D12BEAEC83B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0366DEFFF6C14BE988227205 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ABA2C9A9CA834968B6F382E4 = {
+			isa = PBXGroup;
+			children = (
+				4F9295AA3C7F4BB49C450380 /* Crew */,
+				9C56AEDCE554403BB760A056 /* CrewTests */,
+				A02485E8B5704A8BA71F042A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A02485E8B5704A8BA71F042A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CB972C4FF6342D5863CE54E /* Crew.app */,
+				6266644055F94E82A91C6EFF /* CrewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4F9295AA3C7F4BB49C450380 /* Crew */ = {
+			isa = PBXGroup;
+			children = (
+				CFBCD0BB1D2B4A71A64E26E1 /* App */,
+				03A4EE0128424C5BBFBC22D0 /* Session */,
+				0839B46CF98A4914B8587206 /* Collab */,
+				050038D257D8498A8DB744EB /* Assets.xcassets */,
+				B5A02D6A9EC24522BF4DA014 /* Crew.entitlements */,
+				1DF1CD656E414FDCB5B87D47 /* Info.plist */,
+			);
+			path = Crew;
+			sourceTree = "<group>";
+		};
+		CFBCD0BB1D2B4A71A64E26E1 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C0A1B2C3D4E5F60718293A00 /* Theme.swift */,
+				C1280CAB7C254DA4B252B4F7 /* CrewApp.swift */,
+				46A341E4EB804BAD8854D110 /* JoinView.swift */,
+				07BF9BFEA0D347868FD2F765 /* RoomView.swift */,
+				B36F0AF204244632ADF4D1C7 /* ParticipantList.swift */,
+				1E01A780E1AB475084E78570 /* StageView.swift */,
+				E37D383CDD6F4CFD8C72FF78 /* IsolationInspector.swift */,
+				7047C8B840C643D4890FDB79 /* SharePickerSheet.swift */,
+				C134467987E34B46856AF1BE /* SettingsView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		03A4EE0128424C5BBFBC22D0 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				5EADB733A62C470FB81EE6B9 /* CrewSession.swift */,
+				3A668D96697B496185F1C9F7 /* CrewConfig.swift */,
+				5BE5C4A96176416DBD05BE7D /* LiveKitToken.swift */,
+				6FB29D9343D149D3B9DA1E05 /* MicIsolation.swift */,
+				673B3E7E76724B5BB35766A5 /* HuddleSounds.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		0839B46CF98A4914B8587206 /* Collab */ = {
+			isa = PBXGroup;
+			children = (
+				8D2755D7245B4E7D9049E895 /* CollabProtocol.swift */,
+				2B44FCF9563A423E8C57EADA /* CollabCoords.swift */,
+				B7389061F48C428CA73E110E /* CollabStore.swift */,
+			);
+			path = Collab;
+			sourceTree = "<group>";
+		};
+		9C56AEDCE554403BB760A056 /* CrewTests */ = {
+			isa = PBXGroup;
+			children = (
+				ACB8495DF8234A4BBCB10302 /* CollabTests.swift */,
+			);
+			path = CrewTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ADE33EA79C8C4B62A8350F1D /* Crew */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F0CCC25BBBD4D33A58D52A8 /* Build configuration list for PBXNativeTarget "Crew" */;
+			buildPhases = (
+				A529DD89BC854DE9994CF2E4 /* Sources */,
+				B835D664A4E14D12BEAEC83B /* Frameworks */,
+				A94AED240D10423E8004FD0B /* Resources */,
+				A932DE748467499785CEEC37 /* Copy env */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Crew;
+			packageProductDependencies = (
+				F8CD3044C66D44D5BEC5D514 /* LiveKit */,
+				83FFB4D8BCB6415797DE1C72 /* LiveKitKrispNoiseFilter */,
+			);
+			productName = Crew;
+			productReference = 8CB972C4FF6342D5863CE54E /* Crew.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FD052B49434B41388EB4DBDC /* CrewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CB4B58C35D34088891C62BA /* Build configuration list for PBXNativeTarget "CrewTests" */;
+			buildPhases = (
+				8FD23A1C96F04FEC8968907F /* Sources */,
+				0366DEFFF6C14BE988227205 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37F5F30E37F4F2FB72CD31D /* PBXTargetDependency */,
+			);
+			name = CrewTests;
+			productName = CrewTests;
+			productReference = 6266644055F94E82A91C6EFF /* CrewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80DA8F8BE3E243AB872CA061 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					ADE33EA79C8C4B62A8350F1D = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					FD052B49434B41388EB4DBDC = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = ADE33EA79C8C4B62A8350F1D;
+					};
+				};
+			};
+			buildConfigurationList = E9071B433A8E489D83CC4BF4 /* Build configuration list for PBXProject "Crew" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ABA2C9A9CA834968B6F382E4;
+			packageReferences = (
+				97C4F4E92C9C4184A25E3AC2 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
+				954E9CE12CEE4361B53A3EF2 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */,
+			);
+			productRefGroup = A02485E8B5704A8BA71F042A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ADE33EA79C8C4B62A8350F1D /* Crew */,
+				FD052B49434B41388EB4DBDC /* CrewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A94AED240D10423E8004FD0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9286EB99C26C49CABAEA5B32 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A932DE748467499785CEEC37 /* Copy env */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy env";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ENV_SRC=\"${SRCROOT}/.env\"\nDEST=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/.env\"\nif [ -f \"$ENV_SRC\" ]; then\n  cp \"$ENV_SRC\" \"$DEST\"\n  echo \"Copied LiveKit env into app bundle\"\nelse\n  echo \"warning: repo .env not found\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A529DD89BC854DE9994CF2E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37EBEF2642004B6CABF8D699 /* CrewApp.swift in Sources */,
+				DA115CA28D6E4A7A8F9F73A5 /* JoinView.swift in Sources */,
+				CF14F64C13C04DDC8E00DFB4 /* RoomView.swift in Sources */,
+				43B8F3ABA24E411DABC85808 /* ParticipantList.swift in Sources */,
+				E53CEE3BA09248659F79D631 /* StageView.swift in Sources */,
+				87C600C606814C8AADBF4772 /* IsolationInspector.swift in Sources */,
+				C0A1B2C3D4E5F60718293A01 /* Theme.swift in Sources */,
+				7AA08B419B194D5A97B84B62 /* SharePickerSheet.swift in Sources */,
+				99B6AB91FED94322AA7725F0 /* SettingsView.swift in Sources */,
+				99575C8D5D6741CA951522AC /* CrewSession.swift in Sources */,
+				B8580A011DD542D2A34C0FC7 /* CrewConfig.swift in Sources */,
+				2F6BF2ED3206433EA57F7A7E /* LiveKitToken.swift in Sources */,
+				B38C912B3D3849B6938F6C73 /* MicIsolation.swift in Sources */,
+				777B9CA5C50549A1BE3337DA /* HuddleSounds.swift in Sources */,
+				CCE409BA87634DD2A6D0715F /* CollabProtocol.swift in Sources */,
+				9CB9EF3B4C074D0396C0C941 /* CollabCoords.swift in Sources */,
+				DD39F121002A4205AD309C36 /* CollabStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FD23A1C96F04FEC8968907F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB19B4E8FE7942F992F5236E /* CollabTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F37F5F30E37F4F2FB72CD31D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ADE33EA79C8C4B62A8350F1D /* Crew */;
+			targetProxy = 8A7C6B601DFD46438161F6D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CB5A60E86A3B4F54BBD7DB3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		27ED480B76D041C1B401F386 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		1104112BDC0C4EC7A91792A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Crew/Crew.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Crew/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crew.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8627F5E1CDE44FE08BE4F3C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Crew/Crew.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Crew/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crew.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C36BCBF548014884A8098E50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crew.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crew.app/Contents/MacOS/Crew";
+			};
+			name = Debug;
+		};
+		2C529094294242F48F9A3CE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crew.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Crew.app/Contents/MacOS/Crew";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E9071B433A8E489D83CC4BF4 /* Build configuration list for PBXProject "Crew" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB5A60E86A3B4F54BBD7DB3E /* Debug */,
+				27ED480B76D041C1B401F386 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5F0CCC25BBBD4D33A58D52A8 /* Build configuration list for PBXNativeTarget "Crew" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1104112BDC0C4EC7A91792A3 /* Debug */,
+				8627F5E1CDE44FE08BE4F3C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2CB4B58C35D34088891C62BA /* Build configuration list for PBXNativeTarget "CrewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C36BCBF548014884A8098E50 /* Debug */,
+				2C529094294242F48F9A3CE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		97C4F4E92C9C4184A25E3AC2 /* XCRemoteSwiftPackageReference "client-sdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/client-sdk-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+		954E9CE12CEE4361B53A3EF2 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/swift-krisp-noise-filter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F8CD3044C66D44D5BEC5D514 /* LiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97C4F4E92C9C4184A25E3AC2 /* XCRemoteSwiftPackageReference "client-sdk-swift" */;
+			productName = LiveKit;
+		};
+		83FFB4D8BCB6415797DE1C72 /* LiveKitKrispNoiseFilter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 954E9CE12CEE4361B53A3EF2 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */;
+			productName = LiveKitKrispNoiseFilter;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 80DA8F8BE3E243AB872CA061 /* Project object */;
+}
