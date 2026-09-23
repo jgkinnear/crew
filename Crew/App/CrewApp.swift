@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct CrewApp: App {
     @StateObject private var session = CrewSession()
+    @StateObject private var updater = CrewUpdater()
 
     var body: some Scene {
         WindowGroup {
@@ -15,6 +16,12 @@ struct CrewApp: App {
         .defaultSize(width: 1240, height: 820)
         .commands {
             CommandGroup(replacing: .newItem) {}
+            CommandGroup(after: .appInfo) {
+                Button("Check for Updates…") {
+                    updater.check()
+                }
+                .disabled(!updater.canCheck)
+            }
             CommandMenu("Huddle") {
                 Button(session.isMicEnabled ? "Mute" : "Unmute") {
                     Task { await session.toggleMic() }

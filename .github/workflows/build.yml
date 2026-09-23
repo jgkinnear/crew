@@ -5,6 +5,9 @@ on:
     branches: [master, main]
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   macos:
     runs-on: macos-15
@@ -17,9 +20,10 @@ jobs:
           LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
           LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
           LIVEKIT_ROOM: ${{ secrets.LIVEKIT_ROOM }}
+          CREW_UPDATE_TOKEN: ${{ secrets.CREW_UPDATE_TOKEN }}
         run: |
           missing=
-          for name in LIVEKIT_URL LIVEKIT_API_KEY LIVEKIT_API_SECRET LIVEKIT_ROOM; do
+          for name in LIVEKIT_URL LIVEKIT_API_KEY LIVEKIT_API_SECRET LIVEKIT_ROOM CREW_UPDATE_TOKEN; do
             eval "value=\${$name}"
             if [ -z "$value" ]; then
               missing="$missing $name"
@@ -36,6 +40,7 @@ jobs:
             printf 'LIVEKIT_API_KEY=%s\n' "$LIVEKIT_API_KEY"
             printf 'LIVEKIT_API_SECRET=%s\n' "$LIVEKIT_API_SECRET"
             printf 'LIVEKIT_ROOM=%s\n' "$LIVEKIT_ROOM"
+            printf 'CREW_UPDATE_TOKEN=%s\n' "$CREW_UPDATE_TOKEN"
           } > .env
 
       - name: Build
@@ -48,6 +53,8 @@ jobs:
             -destination 'platform=macOS' \
             -clonedSourcePackagesDirPath ./SourcePackages \
             CODE_SIGN_IDENTITY="-" \
+            CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            MARKETING_VERSION="1.0.${{ github.run_number }}" \
             build
 
       - name: Test
@@ -74,3 +81,10 @@ jobs:
           path: release/Crew-mac-arm64.zip
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish update
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SPARKLE_ED25519_KEY: ${{ secrets.SPARKLE_ED25519_KEY }}
+        run: ./scripts/publish-update.sh

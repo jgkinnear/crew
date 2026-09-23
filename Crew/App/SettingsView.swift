@@ -14,6 +14,8 @@ struct SettingsView: View {
                 Section("About") {
                     Text("System voice follows the mic mode already set in macOS. All sound turns that processing off.")
                         .foregroundStyle(.secondary)
+                    Text("Crew checks the private GitHub release on launch and asks before it installs an update.")
+                        .foregroundStyle(.secondary)
                 }
             }
             .formStyle(.grouped)

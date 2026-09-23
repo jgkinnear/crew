@@ -26,6 +26,8 @@
 		9286EB99C26C49CABAEA5B32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 050038D257D8498A8DB744EB /* Assets.xcassets */; };
 		C0A1B2C3D4E5F60718293A01 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1B2C3D4E5F60718293A00 /* Theme.swift */; };
 		AB19B4E8FE7942F992F5236E /* CollabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB8495DF8234A4BBCB10302 /* CollabTests.swift */; };
+		D4E5F6A7B8C94D0E1F2A3B11 /* CrewUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A7B8C94D0E1F2A3B10 /* CrewUpdater.swift */; };
+		D4E5F6A7B8C94D0E1F2A3B21 /* GitHubRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A7B8C94D0E1F2A3B20 /* GitHubRelease.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		1DF1CD656E414FDCB5B87D47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		050038D257D8498A8DB744EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ACB8495DF8234A4BBCB10302 /* CollabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollabTests.swift; sourceTree = "<group>"; };
+		D4E5F6A7B8C94D0E1F2A3B10 /* CrewUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewUpdater.swift; sourceTree = "<group>"; };
+		D4E5F6A7B8C94D0E1F2A3B20 /* GitHubRelease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubRelease.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,7 @@
 				E37D383CDD6F4CFD8C72FF78 /* IsolationInspector.swift */,
 				7047C8B840C643D4890FDB79 /* SharePickerSheet.swift */,
 				C134467987E34B46856AF1BE /* SettingsView.swift */,
+				D4E5F6A7B8C94D0E1F2A3B10 /* CrewUpdater.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 				5BE5C4A96176416DBD05BE7D /* LiveKitToken.swift */,
 				6FB29D9343D149D3B9DA1E05 /* MicIsolation.swift */,
 				673B3E7E76724B5BB35766A5 /* HuddleSounds.swift */,
+				D4E5F6A7B8C94D0E1F2A3B20 /* GitHubRelease.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -179,6 +185,7 @@
 			packageProductDependencies = (
 				F8CD3044C66D44D5BEC5D514 /* LiveKit */,
 				83FFB4D8BCB6415797DE1C72 /* LiveKitKrispNoiseFilter */,
+				D4E5F6A7B8C94D0E1F2A3B13 /* Sparkle */,
 			);
 			productName = Crew;
 			productReference = 8CB972C4FF6342D5863CE54E /* Crew.app */;
@@ -232,6 +239,7 @@
 			packageReferences = (
 				97C4F4E92C9C4184A25E3AC2 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
 				954E9CE12CEE4361B53A3EF2 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */,
+				D4E5F6A7B8C94D0E1F2A3B12 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = A02485E8B5704A8BA71F042A /* Products */;
 			projectDirPath = "";
@@ -290,6 +298,8 @@
 				B8580A011DD542D2A34C0FC7 /* CrewConfig.swift in Sources */,
 				2F6BF2ED3206433EA57F7A7E /* LiveKitToken.swift in Sources */,
 				B38C912B3D3849B6938F6C73 /* MicIsolation.swift in Sources */,
+				D4E5F6A7B8C94D0E1F2A3B11 /* CrewUpdater.swift in Sources */,
+				D4E5F6A7B8C94D0E1F2A3B21 /* GitHubRelease.swift in Sources */,
 				777B9CA5C50549A1BE3337DA /* HuddleSounds.swift in Sources */,
 				CCE409BA87634DD2A6D0715F /* CollabProtocol.swift in Sources */,
 				9CB9EF3B4C074D0396C0C941 /* CollabCoords.swift in Sources */,
@@ -486,6 +496,14 @@
 				minimumVersion = 0.0.8;
 			};
 		};
+		D4E5F6A7B8C94D0E1F2A3B12 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -498,6 +516,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 954E9CE12CEE4361B53A3EF2 /* XCRemoteSwiftPackageReference "swift-krisp-noise-filter" */;
 			productName = LiveKitKrispNoiseFilter;
+		};
+		D4E5F6A7B8C94D0E1F2A3B13 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4E5F6A7B8C94D0E1F2A3B12 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

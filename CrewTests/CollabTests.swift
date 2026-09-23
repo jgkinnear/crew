@@ -83,6 +83,21 @@ final class CollabProtocolTests: XCTestCase {
     }
 }
 
+final class GitHubReleaseTests: XCTestCase {
+    func testAssetAPIURL() throws {
+        let json = """
+        {"assets":[{"name":"appcast.xml","url":"https://api.github.com/repos/jgkinnear/crew/releases/assets/9"},{"name":"other.zip","url":"https://api.github.com/repos/jgkinnear/crew/releases/assets/8"}]}
+        """.data(using: .utf8)!
+        let url = GitHubRelease.assetAPIURL(named: "appcast.xml", in: json)
+        XCTAssertEqual(url?.absoluteString, "https://api.github.com/repos/jgkinnear/crew/releases/assets/9")
+    }
+
+    func testMissingAssetIsNil() {
+        let json = #"{"assets":[]}"#.data(using: .utf8)!
+        XCTAssertNil(GitHubRelease.assetAPIURL(named: "appcast.xml", in: json))
+    }
+}
+
 final class MicProcessingTests: XCTestCase {
     func testSystemUsesPlatformVoiceProcessing() {
         let options = CaptureSettings.preset(.system).makeCaptureOptions()

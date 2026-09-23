@@ -5,6 +5,7 @@ struct CrewConfig: Equatable, Sendable {
     var apiKey: String
     var apiSecret: String
     var room: String
+    var updateToken: String
 
     var isConfigured: Bool {
         !url.isEmpty && !apiKey.isEmpty && !apiSecret.isEmpty && !room.isEmpty
@@ -17,6 +18,7 @@ struct CrewConfig: Equatable, Sendable {
             "LIVEKIT_API_KEY": "devkey",
             "LIVEKIT_API_SECRET": "secret",
             "LIVEKIT_ROOM": "deckee-huddle",
+            "CREW_UPDATE_TOKEN": "",
         ]
 
         for (key, value) in ProcessInfo.processInfo.environment {
@@ -36,7 +38,8 @@ struct CrewConfig: Equatable, Sendable {
             url: values["LIVEKIT_URL"] ?? "",
             apiKey: values["LIVEKIT_API_KEY"] ?? "",
             apiSecret: values["LIVEKIT_API_SECRET"] ?? "",
-            room: values["LIVEKIT_ROOM"] ?? "deckee-huddle"
+            room: values["LIVEKIT_ROOM"] ?? "deckee-huddle",
+            updateToken: values["CREW_UPDATE_TOKEN"] ?? ""
         )
     }
 

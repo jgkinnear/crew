@@ -18,6 +18,12 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>SUFeedURL</key>
+	<string>https://github.com/jgkinnear/crew/releases/download/updates/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>RAzG7Wt5WRGWRnB88vYAMmHaLRt+chg6r+JDtlmwokk=</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
