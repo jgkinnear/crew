@@ -12,6 +12,7 @@ struct JoinView: View {
                 HStack {
                     wordmark
                     Spacer()
+                    UpdateAvailableButton()
                 }
                 .padding(.leading, 86)
                 .padding(.trailing, 24)

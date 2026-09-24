@@ -20,4 +20,14 @@ enum GitHubRelease {
         }
         return URL(string: raw)
     }
+
+    /// Browser download URL. Sparkle can fetch this over HTTPS with the update token.
+    static func browserDownloadURL(named name: String, in releaseJSON: Data) -> URL? {
+        guard
+            let json = try? JSONSerialization.jsonObject(with: releaseJSON) as? [String: Any],
+            let assets = json["assets"] as? [[String: Any]],
+            let raw = assets.first(where: { $0["name"] as? String == name })?["browser_download_url"] as? String
+        else { return nil }
+        return URL(string: raw)
+    }
 }

@@ -3,10 +3,12 @@ import Sparkle
 
 /// Checks the private `updates` GitHub release and lets Sparkle prompt, install, and relaunch.
 /// The feed is downloaded with CREW_UPDATE_TOKEN because the repository is private.
-final class CrewUpdater: NSObject, SPUUpdaterDelegate, ObservableObject {
+final class CrewUpdater: NSObject, SPUUpdaterDelegate, SPUStandardUserDriverDelegate, ObservableObject {
     private var controller: SPUStandardUpdaterController?
     private let session: URLSession
     let canCheck: Bool
+    /// Short version of a build newer than this one, when a background check has found one.
+    @Published private(set) var availableUpdate: String?
 
     override init() {
         let configuration = URLSessionConfiguration.ephemeral
@@ -20,8 +22,16 @@ final class CrewUpdater: NSObject, SPUUpdaterDelegate, ObservableObject {
         controller = SPUStandardUpdaterController(
             startingUpdater: true,
             updaterDelegate: self,
-            userDriverDelegate: nil
+            userDriverDelegate: self
         )
+        let token = CrewConfig.load().updateToken
+        controller?.updater.httpHeaders = [
+            "Authorization": "Bearer \(token)",
+            "User-Agent": "Crew",
+            "X-GitHub-Api-Version": "2022-11-28",
+        ]
+        controller?.updater.automaticallyChecksForUpdates = true
+        controller?.updater.updateCheckInterval = 10 * 60
         controller?.updater.checkForUpdatesInBackground()
     }
 
@@ -29,33 +39,56 @@ final class CrewUpdater: NSObject, SPUUpdaterDelegate, ObservableObject {
         controller?.checkForUpdates(nil)
     }
 
+    /// Brings the already-found update forward so Sparkle can download, install, and relaunch.
+    func install() {
+        controller?.checkForUpdates(nil)
+    }
+
+    var supportsGentleScheduledUpdateReminders: Bool { true }
+
+    func standardUserDriverShouldHandleShowingScheduledUpdate(_ update: SUAppcastItem, andInImmediateFocus immediateFocus: Bool) -> Bool {
+        false
+    }
+
+    func standardUserDriverWillHandleShowingUpdate(_ handleShowingUpdate: Bool, forUpdate update: SUAppcastItem, state: SPUUserUpdateState) {
+        publish(update)
+    }
+
+    func standardUserDriverWillFinishUpdateSession() {
+        DispatchQueue.main.async {
+            self.availableUpdate = nil
+        }
+    }
+
+    func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
+        publish(item)
+    }
+
+    func updaterDidNotFindUpdate(_ updater: SPUUpdater) {
+        DispatchQueue.main.async {
+            self.availableUpdate = nil
+        }
+    }
+
+    private func publish(_ item: SUAppcastItem) {
+        let version = item.displayVersionString
+        DispatchQueue.main.async {
+            self.availableUpdate = version
+        }
+    }
+
     func feedURLString(for updater: SPUUpdater) -> String? {
-        refreshAppcast()?.absoluteString
-    }
-
-    func updater(_ updater: SPUUpdater, willDownloadUpdate item: SUAppcastItem, with request: NSMutableURLRequest) {
-        authorize(request)
-    }
-
-    private func refreshAppcast() -> URL? {
         let token = CrewConfig.load().updateToken
         guard !token.isEmpty else { return nil }
         guard
             let release = fetch(GitHubRelease.updatesAPI, token: token, accept: "application/vnd.github+json"),
-            let appcastAPI = GitHubRelease.assetAPIURL(named: GitHubRelease.appcastName, in: release),
-            let appcast = fetch(appcastAPI, token: token, accept: "application/octet-stream")
+            let appcast = GitHubRelease.browserDownloadURL(named: GitHubRelease.appcastName, in: release)
         else { return nil }
+        return appcast.absoluteString
+    }
 
-        let folder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("Crew", isDirectory: true)
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let file = folder.appendingPathComponent(GitHubRelease.appcastName)
-        do {
-            try appcast.write(to: file, options: .atomic)
-            return file
-        } catch {
-            return nil
-        }
+    func updater(_ updater: SPUUpdater, willDownloadUpdate item: SUAppcastItem, with request: NSMutableURLRequest) {
+        authorize(request)
     }
 
     private func fetch(_ url: URL, token: String, accept: String) -> Data? {

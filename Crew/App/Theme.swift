@@ -132,6 +132,30 @@ struct CrewAvatar: View {
     }
 }
 
+struct UpdateAvailableButton: View {
+    @EnvironmentObject private var updater: CrewUpdater
+
+    var body: some View {
+        if let version = updater.availableUpdate {
+            Button {
+                updater.install()
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "arrow.down.circle.fill")
+                    Text("Update to \(version)")
+                        .font(.caption.weight(.semibold))
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(CrewTheme.accentGradient, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .help("Download and install Crew \(version)")
+        }
+    }
+}
+
 struct LivePill: View {
     var body: some View {
         HStack(spacing: 6) {

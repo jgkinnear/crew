@@ -9,6 +9,7 @@ struct CrewApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(session)
+                .environmentObject(updater)
                 .preferredColorScheme(.dark)
         }
         .windowStyle(.hiddenTitleBar)
