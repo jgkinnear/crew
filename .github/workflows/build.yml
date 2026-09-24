@@ -75,10 +75,10 @@ jobs:
           codesign --force --deep --sign - --timestamp=none "$APP"
           ditto -c -k --sequesterRsrc --keepParent "$APP" release/Crew-mac-arm64.zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
-          name: Crew-mac-arm64
           path: release/Crew-mac-arm64.zip
+          archive: false
           if-no-files-found: error
           retention-days: 14
 
