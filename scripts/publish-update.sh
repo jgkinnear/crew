@@ -18,8 +18,9 @@ if [ -z "$KEY" ]; then
 fi
 
 TOOLS="$ROOT/release/sparkle-tools"
+SIGN_UPDATE="$TOOLS/bin/sign_update"
 mkdir -p "$TOOLS"
-if [ ! -x "$TOOLS/sign_update" ]; then
+if [ ! -x "$SIGN_UPDATE" ]; then
   curl -fsSL -o "$TOOLS/Sparkle.tar.xz" "https://github.com/sparkle-project/Sparkle/releases/download/2.10.0/Sparkle-2.10.0.tar.xz"
   tar -xJf "$TOOLS/Sparkle.tar.xz" -C "$TOOLS"
 fi
@@ -28,7 +29,7 @@ KEYFILE="$(mktemp)"
 trap 'rm -f "$KEYFILE"' EXIT
 printf '%s' "$KEY" > "$KEYFILE"
 
-SIGNATURE="$("$TOOLS/sign_update" --ed-key-file "$KEYFILE" -p "$ZIP")"
+SIGNATURE="$("$SIGN_UPDATE" --ed-key-file "$KEYFILE" -p "$ZIP")"
 LENGTH="$(stat -f%z "$ZIP")"
 SHORT="$(defaults read "$APP/Contents/Info" CFBundleShortVersionString)"
 BUILD="$(defaults read "$APP/Contents/Info" CFBundleVersion)"
