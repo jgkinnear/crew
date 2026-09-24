@@ -15,8 +15,7 @@ struct ParticipantList: View {
                         ParticipantRow(
                             participant: participant,
                             isLocal: participant.identity == session.room.localParticipant.identity,
-                            isSharing: session.activeShare?.participant.identity == participant.identity,
-                            speaking: session.isSpeaking(participant.identity?.stringValue ?? "")
+                            isSharing: session.activeShare?.participant.identity == participant.identity
                         )
                     }
                 }
@@ -35,10 +34,10 @@ struct ParticipantList: View {
 }
 
 private struct ParticipantRow: View {
-    let participant: Participant
+    @EnvironmentObject private var session: CrewSession
+    @ObservedObject var participant: Participant
     let isLocal: Bool
     let isSharing: Bool
-    let speaking: Bool
 
     var body: some View {
         HStack(spacing: 10) {
@@ -46,7 +45,7 @@ private struct ParticipantRow: View {
                 name: displayName,
                 identity: identity,
                 size: 34,
-                speaking: speaking,
+                speaking: talking,
                 sharing: isSharing
             )
             VStack(alignment: .leading, spacing: 2) {
@@ -65,12 +64,15 @@ private struct ParticipantRow: View {
                     }
                 }
                 HStack(spacing: 5) {
-                    Image(systemName: micMuted ? "mic.slash" : "mic.fill")
-                        .foregroundStyle(micMuted ? CrewTheme.faint : CrewTheme.success)
-                    if speaking {
+                    Image(systemName: microphoneOn ? "mic.fill" : "mic.slash.fill")
+                        .foregroundStyle(microphoneOn ? (talking ? CrewTheme.accent2 : CrewTheme.success) : CrewTheme.faint)
+                    if talking {
                         SpeakingBars()
                         Text(isLocal ? "you’re talking" : "talking")
                             .foregroundStyle(CrewTheme.accent2)
+                    } else if !microphoneOn {
+                        Text("muted")
+                            .foregroundStyle(CrewTheme.faint)
                     }
                     if isSharing {
                         Text("sharing")
@@ -85,13 +87,14 @@ private struct ParticipantRow: View {
         .padding(.vertical, 8)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(speaking ? CrewTheme.accent2.opacity(0.08) : Color.clear)
+                .fill(talking ? CrewTheme.accent2.opacity(0.08) : Color.clear)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .strokeBorder(speaking ? CrewTheme.accent2.opacity(0.35) : Color.clear)
+                .strokeBorder(talking ? CrewTheme.accent2.opacity(0.35) : Color.clear)
         )
-        .animation(.easeInOut(duration: 0.18), value: speaking)
+        .animation(.easeInOut(duration: 0.18), value: talking)
+        .animation(.easeInOut(duration: 0.18), value: microphoneOn)
     }
 
     private var identity: String {
@@ -102,11 +105,15 @@ private struct ParticipantRow: View {
         participant.name?.isEmpty == false ? participant.name! : identity
     }
 
-    private var micMuted: Bool {
-        if let pub = participant.trackPublications.values.first(where: { $0.source == .microphone }) {
-            return pub.isMuted
+    private var microphoneOn: Bool {
+        if isLocal {
+            return session.isMicEnabled
         }
-        return true
+        return participant.isMicrophoneEnabled()
+    }
+
+    private var talking: Bool {
+        microphoneOn && (participant.isSpeaking || session.isSpeaking(identity))
     }
 }
 
