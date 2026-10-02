@@ -66,23 +66,19 @@ private struct ParticipantRow: View {
                 HStack(spacing: 5) {
                     Image(systemName: microphoneOn ? "mic.fill" : "mic.slash.fill")
                         .foregroundStyle(microphoneOn ? (talking ? CrewTheme.accent2 : CrewTheme.success) : CrewTheme.faint)
-                    if talking {
-                        SpeakingBars()
-                        Text(isLocal ? "you’re talking" : "talking")
-                            .foregroundStyle(CrewTheme.accent2)
-                    } else if !microphoneOn {
-                        Text("muted")
-                            .foregroundStyle(CrewTheme.faint)
-                    }
+                    statusLabel
                     if isSharing {
                         Text("sharing")
                             .foregroundStyle(CrewTheme.accent)
                     }
+                    Spacer(minLength: 0)
                 }
                 .font(.system(size: 10, weight: .medium))
+                .frame(height: 14, alignment: .leading)
             }
             Spacer(minLength: 0)
         }
+        .frame(height: 58, alignment: .center)
         .padding(.horizontal, 8)
         .padding(.vertical, 8)
         .background(
@@ -114,6 +110,20 @@ private struct ParticipantRow: View {
 
     private var talking: Bool {
         microphoneOn && (participant.isSpeaking || session.isSpeaking(identity))
+    }
+
+    @ViewBuilder
+    private var statusLabel: some View {
+        if talking {
+            SpeakingBars()
+            Text(isLocal ? "you’re talking" : "talking")
+                .foregroundStyle(CrewTheme.accent2)
+                .lineLimit(1)
+        } else if !microphoneOn {
+            Text("muted")
+                .foregroundStyle(CrewTheme.faint)
+                .lineLimit(1)
+        }
     }
 }
 

@@ -78,12 +78,7 @@ struct IsolationInspector: View {
     }
 
     private func detail(for mode: MicProcessingMode) -> String {
-        switch mode {
-        case .system:
-            return "macOS is set to \(session.systemMicMode). \(mode.subtitle)"
-        case .open:
-            return mode.subtitle
-        }
+        mode.subtitle
     }
 
     private func toggleRow(isOn: Binding<Bool>, title: String, subtitle: String) -> some View {

@@ -1,7 +1,29 @@
+import AppKit
 import SwiftUI
+
+final class CrewAppDelegate: NSObject, NSApplicationDelegate {
+    var onQuit: (() async -> Void)?
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        let onQuit = onQuit
+        Task { @MainActor in
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask { await onQuit?() }
+                group.addTask {
+                    try? await Task.sleep(nanoseconds: 1_500_000_000)
+                }
+                await group.next()
+                group.cancelAll()
+            }
+            NSApplication.shared.reply(toApplicationShouldTerminate: true)
+        }
+        return .terminateLater
+    }
+}
 
 @main
 struct CrewApp: App {
+    @NSApplicationDelegateAdaptor(CrewAppDelegate.self) private var appDelegate
     @StateObject private var session = CrewSession()
     @StateObject private var updater = CrewUpdater()
 
@@ -11,6 +33,7 @@ struct CrewApp: App {
                 .environmentObject(session)
                 .environmentObject(updater)
                 .preferredColorScheme(.dark)
+                .onAppear { appDelegate.onQuit = { await session.leave() } }
         }
         .windowStyle(.hiddenTitleBar)
         .windowToolbarStyle(.unifiedCompact(showsTitle: false))
@@ -38,11 +61,11 @@ struct CrewApp: App {
 
                 Divider()
 
-                Button(session.capture.mode == .system ? "System Voice ✓" : "System Voice") {
-                    Task { await session.setMicMode(.system) }
+                Button(session.capture.mode == .isolation ? "Voice Isolation ✓" : "Voice Isolation") {
+                    Task { await session.setMicMode(.isolation) }
                 }
                 .keyboardShortcut("i", modifiers: [.command, .shift])
-                Button(session.capture.mode == .open ? "All Sound ✓" : "All Sound") {
+                Button(session.capture.mode == .open ? "All Sounds ✓" : "All Sounds") {
                     Task { await session.setMicMode(.open) }
                 }
 

@@ -61,7 +61,7 @@ struct RoomView: View {
 
             Spacer()
 
-            UpdateAvailableButton()
+            UpdateControls()
             LivePill()
             if !session.activeSpeakers.isEmpty {
                 SpeakingChip(speakers: session.activeSpeakers)

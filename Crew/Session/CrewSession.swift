@@ -24,18 +24,18 @@ final class CrewSession: ObservableObject {
     @Published var isSharing = false
     @Published var shareBlockedReason: String?
     @Published var toolMode: ToolMode = .none
-    @Published var capture = CaptureSettings.preset(.system)
-    @Published var systemMicMode = SystemMic.activeTitle
+    @Published var capture = CaptureSettings.preset(.isolation)
     @Published var soundsEnabled = true
     @Published var shareSources: [ShareSourceItem] = []
     @Published var isSharePickerPresented = false
     @Published var isLoadingSources = false
     @Published var speakingIds: Set<String> = []
+    /// Identities that have left, hidden immediately instead of waiting on the server.
+    @Published private var goneIds: Set<String> = []
 
     private var screenPublication: LocalTrackPublication?
     private var cancellables = Set<AnyCancellable>()
     private var rpcRegistered = false
-    private var micModeTimer: Timer?
 
     var isLocalSharing: Bool {
         activeShare?.participant.identity == room.localParticipant.identity
@@ -50,8 +50,11 @@ final class CrewSession: ObservableObject {
     }
 
     var participants: [Participant] {
-        [room.localParticipant] + Array(room.remoteParticipants.values)
-            .sorted { ($0.name ?? "") < ($1.name ?? "") }
+        let remotes = room.remoteParticipants.values.filter { participant in
+            guard let id = participant.identity?.stringValue else { return true }
+            return !goneIds.contains(id)
+        }
+        return [room.localParticipant] + remotes.sorted { ($0.name ?? "") < ($1.name ?? "") }
     }
 
     var activeShare: (participant: Participant, track: VideoTrack)? {
@@ -84,13 +87,7 @@ final class CrewSession: ObservableObject {
         AudioManager.shared.capturePostProcessingDelegate = krispFilter
         room.add(delegate: krispFilter)
         room.add(delegate: self)
-        krispFilter.isEnabled = false
-        refreshSystemMicMode()
-        micModeTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                self?.refreshSystemMicMode()
-            }
-        }
+        krispFilter.isEnabled = capture.krispEnabled
 
         room.objectWillChange
             .receive(on: RunLoop.main)
@@ -147,12 +144,29 @@ final class CrewSession: ObservableObject {
     }
 
     func leave() async {
+        await announceLeave()
         toolMode = .none
         collab.reset()
         screenPublication = nil
         isSharing = false
         speakingIds = []
+        goneIds = []
         try? await room.disconnect()
+    }
+
+    private func announceLeave() async {
+        guard isConnected, !localIdentity.isEmpty else { return }
+        let payload = Data(localIdentity.utf8)
+        try? await room.localParticipant.publish(
+            data: payload,
+            options: DataPublishOptions(topic: CollabTopic.leave, reliable: true)
+        )
+    }
+
+    private func markGone(_ identity: String) {
+        guard !identity.isEmpty, identity != localIdentity else { return }
+        goneIds.insert(identity)
+        speakingIds.remove(identity)
     }
 
     func setMicMode(_ mode: MicProcessingMode) async {
@@ -280,13 +294,6 @@ final class CrewSession: ObservableObject {
         }
     }
 
-    private func refreshSystemMicMode() {
-        let title = SystemMic.activeTitle
-        if title != systemMicMode {
-            systemMicMode = title
-        }
-    }
-
     private func audioCaptureOptions() -> AudioCaptureOptions {
         capture.makeCaptureOptions()
     }
@@ -337,6 +344,13 @@ final class CrewSession: ObservableObject {
 
 extension CrewSession: RoomDelegate {
     nonisolated func room(_ room: Room, participant: RemoteParticipant?, didReceiveData data: Data, forTopic topic: String, encryptionType: EncryptionType) {
+        if topic == CollabTopic.leave, let identity = String(data: data, encoding: .utf8) {
+            Task { @MainActor in
+                self.markGone(identity)
+                if self.soundsEnabled { HuddleSounds.leave() }
+            }
+            return
+        }
         guard topic == CollabTopic.stroke || topic == CollabTopic.pointer || topic == CollabTopic.clear else { return }
         guard let event = CollabCodec.decode(data) else { return }
         Task { @MainActor in
@@ -354,9 +368,10 @@ extension CrewSession: RoomDelegate {
         let identity = participant.identity?.stringValue
         Task { @MainActor in
             if let identity {
-                self.speakingIds.remove(identity)
+                let alreadyGone = self.goneIds.contains(identity)
+                self.markGone(identity)
+                if self.soundsEnabled, !alreadyGone { HuddleSounds.leave() }
             }
-            if self.soundsEnabled { HuddleSounds.leave() }
         }
     }
 

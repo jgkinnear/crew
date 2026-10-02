@@ -54,12 +54,6 @@ final class CrewUpdater: NSObject, SPUUpdaterDelegate, SPUStandardUserDriverDele
         publish(update)
     }
 
-    func standardUserDriverWillFinishUpdateSession() {
-        DispatchQueue.main.async {
-            self.availableUpdate = nil
-        }
-    }
-
     func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
         publish(item)
     }
@@ -71,7 +65,7 @@ final class CrewUpdater: NSObject, SPUUpdaterDelegate, SPUStandardUserDriverDele
     }
 
     private func publish(_ item: SUAppcastItem) {
-        let version = item.displayVersionString
+        let version = item.displayVersionString.isEmpty ? item.versionString : item.displayVersionString
         DispatchQueue.main.async {
             self.availableUpdate = version
         }

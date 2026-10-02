@@ -102,6 +102,7 @@ enum CollabTopic {
     static let pointer = "huddle.pointer"
     static let clear = "huddle.clear"
     static let getAnnotations = "huddle.getAnnotations"
+    static let leave = "huddle.leave"
     static let pointerHideMs: TimeInterval = 1.5
 }
 
