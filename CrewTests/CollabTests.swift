@@ -99,11 +99,13 @@ final class GitHubReleaseTests: XCTestCase {
 }
 
 final class MicProcessingTests: XCTestCase {
-    func testSystemUsesPlatformVoiceProcessing() {
+    func testSystemCancelsSpeakerEchoInSoftware() {
         let options = CaptureSettings.preset(.system).makeCaptureOptions()
         XCTAssertEqual(CaptureSettings.preset(.system).mode, .system)
         XCTAssertTrue(options.echoCancellation)
-        XCTAssertEqual(options.echoCancellationMode, .platform)
+        XCTAssertEqual(options.echoCancellationMode, .software)
+        XCTAssertEqual(options.autoGainControlMode, .software)
+        XCTAssertTrue(options.highpassFilter)
         XCTAssertFalse(options.noiseSuppression)
         XCTAssertFalse(CaptureSettings.preset(.system).krispEnabled)
     }
