@@ -99,24 +99,28 @@ final class GitHubReleaseTests: XCTestCase {
 }
 
 final class MicProcessingTests: XCTestCase {
-    func testSystemCancelsSpeakerEchoInSoftware() {
-        let options = CaptureSettings.preset(.system).makeCaptureOptions()
-        XCTAssertEqual(CaptureSettings.preset(.system).mode, .system)
+    func testVoiceIsolationFiltersTheRoom() {
+        let settings = CaptureSettings.preset(.isolation)
+        let options = settings.makeCaptureOptions()
+        XCTAssertEqual(settings.mode, .isolation)
+        XCTAssertTrue(settings.krispEnabled)
         XCTAssertTrue(options.echoCancellation)
         XCTAssertEqual(options.echoCancellationMode, .software)
-        XCTAssertEqual(options.autoGainControlMode, .software)
+        XCTAssertTrue(options.noiseSuppression)
+        XCTAssertEqual(options.noiseSuppressionMode, .software)
         XCTAssertTrue(options.highpassFilter)
-        XCTAssertFalse(options.noiseSuppression)
-        XCTAssertFalse(CaptureSettings.preset(.system).krispEnabled)
+        XCTAssertTrue(options.typingNoiseDetection)
     }
 
-    func testOpenMicTurnsIsolationOff() {
-        let options = CaptureSettings.preset(.open).makeCaptureOptions()
-        XCTAssertFalse(options.echoCancellation)
+    func testAllSoundsKeepsTheRoomAndCancelsEcho() {
+        let settings = CaptureSettings.preset(.open)
+        let options = settings.makeCaptureOptions()
+        XCTAssertFalse(settings.krispEnabled)
+        XCTAssertTrue(options.echoCancellation)
+        XCTAssertEqual(options.echoCancellationMode, .software)
         XCTAssertFalse(options.autoGainControl)
         XCTAssertFalse(options.noiseSuppression)
         XCTAssertFalse(options.highpassFilter)
         XCTAssertFalse(options.typingNoiseDetection)
-        XCTAssertFalse(CaptureSettings.preset(.open).krispEnabled)
     }
 }

@@ -1,33 +1,31 @@
-import AVFoundation
 import LiveKit
 
-/// Two mic paths. System follows the macOS mic mode already chosen in Control Center.
-/// Open turns voice processing off so isolation does not apply.
+/// Voice isolation keeps the speaker and drops the room. All sounds leaves the mic open.
 enum MicProcessingMode: String, CaseIterable, Identifiable {
-    case system
+    case isolation
     case open
 
     var id: String { rawValue }
 
     var title: String {
         switch self {
-        case .system: return "System voice"
-        case .open: return "All sound"
+        case .isolation: return "Voice isolation"
+        case .open: return "All sounds"
         }
     }
 
     var subtitle: String {
         switch self {
-        case .system:
-            return "Uses the mic mode macOS already has. Crew does not open Control Center."
+        case .isolation:
+            return "Keeps your voice and removes room noise, keyboards, and the other person's audio."
         case .open:
-            return "Isolation off. Keyboards, room noise, and everything else come through."
+            return "Everything in the room comes through. The other person's audio is still removed so it does not echo."
         }
     }
 
     var symbolName: String {
         switch self {
-        case .system: return "waveform.and.mic"
+        case .isolation: return "waveform.and.mic"
         case .open: return "mic"
         }
     }
@@ -40,43 +38,30 @@ struct CaptureSettings: Equatable {
         CaptureSettings(mode: mode)
     }
 
-    /// Krisp is not part of either mode. The filter stays installed and disabled.
-    var krispEnabled: Bool { false }
+    var krispEnabled: Bool { mode == .isolation }
 
     func makeCaptureOptions() -> AudioCaptureOptions {
         switch mode {
-        case .system:
-            // WebRTC echo cancellation subtracts speaker playback from the mic.
-            // Platform voice processing fights macOS Voice Isolation, which keeps
-            // the remote voice because it sounds like speech and sends it back.
+        case .isolation:
             return AudioCaptureOptions(
                 echoCancellation: true,
                 autoGainControl: true,
-                noiseSuppression: false,
+                noiseSuppression: true,
                 highpassFilter: true,
-                typingNoiseDetection: false,
+                typingNoiseDetection: true,
                 echoCancellationMode: .software,
-                autoGainControlMode: .software
+                autoGainControlMode: .software,
+                noiseSuppressionMode: .software
             )
         case .open:
-            return .noProcessing
-        }
-    }
-}
-
-enum SystemMic {
-    static var activeTitle: String {
-        AVCaptureDevice.activeMicrophoneMode.crewTitle
-    }
-}
-
-extension AVCaptureDevice.MicrophoneMode {
-    var crewTitle: String {
-        switch self {
-        case .standard: return "Standard"
-        case .voiceIsolation: return "Voice Isolation"
-        case .wideSpectrum: return "Wide Spectrum"
-        @unknown default: return "System"
+            return AudioCaptureOptions(
+                echoCancellation: true,
+                autoGainControl: false,
+                noiseSuppression: false,
+                highpassFilter: false,
+                typingNoiseDetection: false,
+                echoCancellationMode: .software
+            )
         }
     }
 }

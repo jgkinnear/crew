@@ -12,7 +12,7 @@ struct SettingsView: View {
                     LabeledContent("LiveKit", value: session.config.url)
                 }
                 Section("About") {
-                    Text("System voice follows the mic mode already set in macOS. All sound turns that processing off.")
+                    Text("Voice isolation keeps your voice and removes the room. All sounds lets the room through.")
                         .foregroundStyle(.secondary)
                     Text("Crew checks the private GitHub release on launch and asks before it installs an update.")
                         .foregroundStyle(.secondary)

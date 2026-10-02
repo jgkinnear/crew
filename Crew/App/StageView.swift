@@ -122,7 +122,7 @@ private struct HuddleDock: View {
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
-            .help(session.capture.mode == .system ? "System voice · \(session.systemMicMode)" : "All sound")
+            .help(session.capture.mode.title)
 
             DockButton(
                 icon: session.isSharing ? "stop.fill" : "rectangle.dashed.badge.record",

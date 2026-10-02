@@ -118,6 +118,7 @@ struct CrewAvatar: View {
                     .offset(x: size * 0.34, y: size * 0.34)
             }
         }
+        .frame(width: size + 16, height: size + 16)
         .animation(.easeInOut(duration: 0.25), value: speaking)
     }
 
@@ -132,26 +133,42 @@ struct CrewAvatar: View {
     }
 }
 
-struct UpdateAvailableButton: View {
+struct UpdateControls: View {
     @EnvironmentObject private var updater: CrewUpdater
 
     var body: some View {
-        if let version = updater.availableUpdate {
+        HStack(spacing: 8) {
             Button {
-                updater.install()
+                updater.check()
             } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "arrow.down.circle.fill")
-                    Text("Update to \(version)")
-                        .font(.caption.weight(.semibold))
-                }
-                .foregroundStyle(.white)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
-                .background(CrewTheme.accentGradient, in: Capsule())
+                Text("Check for updates")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(CrewTheme.text)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.white.opacity(0.08), in: Capsule())
             }
             .buttonStyle(.plain)
-            .help("Download and install Crew \(version)")
+            .disabled(!updater.canCheck)
+            .help("Check the updates release for a newer Crew")
+
+            if let version = updater.availableUpdate {
+                Button {
+                    updater.install()
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.down.circle.fill")
+                        Text("Update to \(version)")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(CrewTheme.accentGradient, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                .help("Download and install Crew \(version)")
+            }
         }
     }
 }
