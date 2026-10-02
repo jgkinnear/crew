@@ -46,14 +46,17 @@ struct CaptureSettings: Equatable {
     func makeCaptureOptions() -> AudioCaptureOptions {
         switch mode {
         case .system:
+            // WebRTC echo cancellation subtracts speaker playback from the mic.
+            // Platform voice processing fights macOS Voice Isolation, which keeps
+            // the remote voice because it sounds like speech and sends it back.
             return AudioCaptureOptions(
                 echoCancellation: true,
                 autoGainControl: true,
                 noiseSuppression: false,
-                highpassFilter: false,
+                highpassFilter: true,
                 typingNoiseDetection: false,
-                echoCancellationMode: .platform,
-                autoGainControlMode: .platform
+                echoCancellationMode: .software,
+                autoGainControlMode: .software
             )
         case .open:
             return .noProcessing
